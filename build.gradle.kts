@@ -4,6 +4,7 @@ plugins {
     id("org.javamodularity.moduleplugin") version "1.8.15"
     id("org.openjfx.javafxplugin") version "0.0.13"
     id("org.beryx.jlink") version "2.25.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "com.example"
@@ -27,7 +28,7 @@ tasks.withType<JavaCompile> {
 
 application {
     mainModule.set("com.example.jchart")
-    mainClass.set("com.example.jchart.HelloApplication")
+    mainClass.set("com.example.jchart.Launcher")
 }
 
 javafx {
@@ -42,8 +43,14 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    archiveClassifier.set("all")
+    // Merges service files (required for some libraries like ControlsFX)
+    mergeServiceFiles()
+
+    manifest {
+        attributes["Main-Class"] = "com.example.jchart.Launcher"
+    }
 }
 
 jlink {
