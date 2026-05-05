@@ -67,7 +67,7 @@ public class SettingsManager {
             // Windows: C:\Users\account\AppData\Roaming\JChart\
             appDataDir = System.getenv("APPDATA") + File.separator + "JChart";
         } else if (os.contains("mac")) {
-            // Mac: /Users/user/Library/Application Support/JChart/
+            // Mac: /Users/account/Library/Application Support/JChart/
             appDataDir = System.getProperty("user.home") + File.separator + "Library" + File.separator + "Application Support" + File.separator + "JChart";
         } else {
             // Linux: /home/user/.config/JChart/
