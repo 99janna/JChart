@@ -109,7 +109,7 @@ val packageApp by tasks.registering(Exec::class) {
 
     val iconFile = when {
         System.getProperty("os.name").lowercase().contains("mac") -> "src/main/resources/icons/JChart_Icon.icns"
-        else -> "src/main/resources/icon/JChart_Icon.ico"
+        else -> "src/main/resources/icons/JChart_Icon.ico"
     }
 
     commandLine(

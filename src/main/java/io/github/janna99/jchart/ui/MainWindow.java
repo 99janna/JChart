@@ -87,7 +87,7 @@ public class MainWindow implements ChartStateListener{
         }
 
         chartStage.setScene(new Scene(new StackPane(), 800, 600)) ;
-        //chartStage.setFullScreen(true); //TODO maybe add this back in and remove the setWidth/setHeight above
+        chartStage.setFullScreen(true); //TODO this should be active for windows computers only, deactivate on macs
 
         chartStage.show() ;
 
