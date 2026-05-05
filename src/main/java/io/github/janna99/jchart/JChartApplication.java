@@ -1,8 +1,8 @@
-package com.example.jchart;
+package io.github.janna99.jchart;
 
-import com.example.jchart.settings.AppSettings;
-import com.example.jchart.settings.SettingsManager;
-import com.example.jchart.ui.MainWindow;
+import io.github.janna99.jchart.settings.AppSettings;
+import io.github.janna99.jchart.settings.SettingsManager;
+import io.github.janna99.jchart.ui.MainWindow;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

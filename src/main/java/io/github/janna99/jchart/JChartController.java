@@ -2,9 +2,9 @@
  * Controller class for the EyeChart
  */
 
-package com.example.jchart;
+package io.github.janna99.jchart;
 
-import com.example.jchart.ui.ChartStateListener;
+import io.github.janna99.jchart.ui.ChartStateListener;
 import javafx.geometry.Pos;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;

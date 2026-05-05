@@ -1,4 +1,4 @@
-module com.example.jchart {
+module io.github.janna99.jchart {
     requires javafx.controls;
     requires javafx.fxml;
 
@@ -7,10 +7,10 @@ module com.example.jchart {
     requires jdk.compiler;
     requires javafx.graphics;
 
-    opens com.example.jchart to javafx.fxml;
-    exports com.example.jchart;
-    exports com.example.jchart.settings;
-    opens com.example.jchart.settings to javafx.fxml;
-    exports com.example.jchart.ui;
-    opens com.example.jchart.ui to javafx.fxml;
+    opens io.github.janna99.jchart to javafx.fxml;
+    exports io.github.janna99.jchart;
+    exports io.github.janna99.jchart.settings;
+    opens io.github.janna99.jchart.settings to javafx.fxml;
+    exports io.github.janna99.jchart.ui;
+    opens io.github.janna99.jchart.ui to javafx.fxml;
 }

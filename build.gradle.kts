@@ -7,7 +7,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-group = "com.example"
+group = "io.github.janna99"
 version = "1.0"
 
 repositories {
@@ -27,8 +27,8 @@ tasks.withType<JavaCompile> {
 }
 
 application {
-    mainModule.set("com.example.jchart")
-    mainClass.set("com.example.jchart.Launcher")
+    mainModule.set("io.github.janna99.jchart")
+    mainClass.set("io.github.janna99.jchart.Launcher")
 }
 
 javafx {
@@ -49,7 +49,7 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
 
     manifest {
-        attributes["Main-Class"] = "com.example.jchart.Launcher"
+        attributes["Main-Class"] = "io.github.janna99.jchart.Launcher"
     }
 }
 
@@ -65,7 +65,7 @@ jlink {
 // ─── Packaging Task ───────────────────────────────────────────────────────────
 
 val appName = "JChart"
-val mainClassName = "com.example.jchart.Launcher"
+val mainClassName = "io.github.janna99.jchart.Launcher"
 val javaModules = "javafx.controls,javafx.fxml,javafx.graphics,java.base,java.desktop,jdk.unsupported"
 
 val inputDir = layout.buildDirectory.dir("package-input")
@@ -108,8 +108,8 @@ val packageApp by tasks.registering(Exec::class) {
     val jarName = shadowJar.archiveFileName.get()
 
     val iconFile = when {
-        System.getProperty("os.name").lowercase().contains("mac") -> "src/main/resources/icon.icns"
-        else -> "src/main/resources/icon.ico"
+        System.getProperty("os.name").lowercase().contains("mac") -> "src/main/resources/icons/icon.icns"
+        else -> "src/main/resources/icon/icons.ico"
     }
 
     commandLine(

@@ -5,7 +5,7 @@
  * returns the Text with the correct font and point size
  */
 
-package com.example.jchart;
+package io.github.janna99.jchart;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;

@@ -3,7 +3,7 @@
  * AppSettings is the current STATE, the SettingsManager CHANGES current properties state
  */
 
-package com.example.jchart.settings;
+package io.github.janna99.jchart.settings;
 
 import java.io.*;
 import java.util.Properties;

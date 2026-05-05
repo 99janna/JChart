@@ -2,7 +2,7 @@
  * Data representing the application's settings.
  */
 
-package com.example.jchart.settings;
+package io.github.janna99.jchart.settings;
 
 public class AppSettings {
 

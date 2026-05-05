@@ -3,7 +3,7 @@
  * Creates Horizontal box with the text for use in JavaFx
  */
 
-package com.example.jchart;
+package io.github.janna99.jchart;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;

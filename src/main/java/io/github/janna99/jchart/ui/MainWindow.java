@@ -2,13 +2,13 @@
  * MainWindow is the class containing the user interface screen and the chart preview
  */
 
-package com.example.jchart.ui;
+package io.github.janna99.jchart.ui;
 
-import com.example.jchart.EyeChart;
-import com.example.jchart.JChartController;
-import com.example.jchart.LetterRenderer;
-import com.example.jchart.settings.AppSettings;
-import com.example.jchart.settings.SettingsManager;
+import io.github.janna99.jchart.EyeChart;
+import io.github.janna99.jchart.JChartController;
+import io.github.janna99.jchart.LetterRenderer;
+import io.github.janna99.jchart.settings.AppSettings;
+import io.github.janna99.jchart.settings.SettingsManager;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;

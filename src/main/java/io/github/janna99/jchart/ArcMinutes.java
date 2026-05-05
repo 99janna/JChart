@@ -1,4 +1,4 @@
-package com.example.jchart;
+package io.github.janna99.jchart;
 import java.lang.Math ;
 
 /**

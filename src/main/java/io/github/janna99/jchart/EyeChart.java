@@ -2,7 +2,7 @@
  * Class to generate the EyeChart, factoring in the distance, type of chart, and scale.
  */
 
-package com.example.jchart;
+package io.github.janna99.jchart;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.Pane;
