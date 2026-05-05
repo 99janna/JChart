@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.example"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -33,7 +33,7 @@ application {
 
 javafx {
     version = "21.0.6"
-    modules = listOf("javafx.controls", "javafx.fxml")
+    modules = listOf("javafx.controls", "javafx.fxml", "javafx.graphics")
 }
 
 dependencies {
@@ -60,3 +60,72 @@ jlink {
         name = "app"
     }
 }
+
+
+// ─── Packaging Task ───────────────────────────────────────────────────────────
+
+val appName = "JChart"
+val mainClassName = "com.example.jchart.Launcher"
+val javaModules = "javafx.controls,javafx.fxml,javafx.graphics,java.base,java.desktop,jdk.unsupported"
+
+val inputDir = layout.buildDirectory.dir("package-input")
+val runtimeDir = layout.buildDirectory.dir("package-runtime")
+val outputDir = layout.buildDirectory.dir("package-output")
+
+// Step 1: Copy only the fat JAR into a clean input folder
+val prepareInput by tasks.registering(Copy::class) {
+    dependsOn(tasks.named("shadowJar"))
+    from(tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar").map { it.archiveFile })
+    into(inputDir)
+}
+
+// Step 2: Run jlink to create a runtime image
+val createRuntime by tasks.registering(Exec::class) {
+    dependsOn(prepareInput)
+    val runtimePath = runtimeDir.get().asFile
+
+    doFirst {
+        runtimePath.deleteRecursively() // jlink fails if output folder already exists
+    }
+
+    commandLine(
+        "${System.getProperty("java.home")}/bin/jlink",
+        "--add-modules", javaModules,
+        "--output", runtimePath.absolutePath
+    )
+}
+
+// Step 3: Run jpackage to create the app image
+val packageApp by tasks.registering(Exec::class) {
+    dependsOn(createRuntime)
+    val outputPath = outputDir.get().asFile
+
+    doFirst {
+        outputPath.deleteRecursively() // jpackage fails if output folder already exists
+    }
+
+    val shadowJar = tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar").get()
+    val jarName = shadowJar.archiveFileName.get()
+
+    val iconFile = when {
+        System.getProperty("os.name").lowercase().contains("mac") -> "src/main/resources/icon.icns"
+        else -> "src/main/resources/icon.ico"
+    }
+
+    commandLine(
+        "${System.getProperty("java.home")}/bin/jpackage",
+        "--type", "app-image",
+        "--input", inputDir.get().asFile.absolutePath,
+        "--dest", outputPath.absolutePath,
+        "--name", appName,
+        "--main-jar", jarName,
+        "--main-class", mainClassName,
+        "--runtime-image", runtimeDir.get().asFile.absolutePath,
+        "--icon", iconFile
+    )
+
+    doLast {
+        println("✅ App packaged successfully at: ${outputPath.absolutePath}/$appName")
+    }
+}
+

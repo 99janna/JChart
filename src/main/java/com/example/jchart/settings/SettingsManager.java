@@ -10,7 +10,7 @@ import java.util.Properties;
 
 public class SettingsManager {
 
-    private static final String propertyFilePath = "jchart_settings.properties" ;
+    private static final String propertyFilePath = getPropertyFilePath() ;
     private static final double DEFAULT_DISTANCE = 3.0 ;  //the default distance to the chart, in meters
     private static final String DEFAULT_CHART_TYPE = "Sloan" ;
 
@@ -57,6 +57,33 @@ public class SettingsManager {
             System.err.println("Failed to load the settings") ;
             return new AppSettings(DEFAULT_DISTANCE, DEFAULT_CHART_TYPE) ;
         }
+    }
+
+    private static String getPropertyFilePath() {
+        String os = System.getProperty("os.name").toLowerCase();
+        String appDataDir;
+
+        if (os.contains("win")) {
+            // Windows: C:\Users\account\AppData\Roaming\JChart\
+            appDataDir = System.getenv("APPDATA") + File.separator + "JChart";
+        } else if (os.contains("mac")) {
+            // Mac: /Users/user/Library/Application Support/JChart/
+            appDataDir = System.getProperty("user.home") + File.separator + "Library" + File.separator + "Application Support" + File.separator + "JChart";
+        } else {
+            // Linux: /home/user/.config/JChart/
+            appDataDir = System.getProperty("user.home") + File.separator + ".config" + File.separator + "JChart";
+        }
+
+        // Create the directory if it doesn't exist
+        File dir = new File(appDataDir);
+        if (!dir.exists()) {
+            boolean created = dir.mkdirs();
+            if (!created) {
+                System.err.println("Warning: could not create settings directory at " + dir.getAbsolutePath());
+            }
+        }
+
+        return appDataDir + File.separator + "jchart_settings.properties";
     }
 
 }
