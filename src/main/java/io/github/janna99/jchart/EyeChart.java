@@ -18,7 +18,7 @@ public class EyeChart {
     private List<ChartRow> chartRows ;  //a list of chartrow objects to make up the eye chart
     private double distanceMeters ; //the passed variable for the chart distance in meters
     private String chartType ; //which type of chart
-    private double outputScaleX ; //the screen's scale factor
+    private double screenPPI ; //the screen's pixel density
 
     //Arrays of constants used in the eye chart, including letter options and sloan denominators
     private static final String[] SLOAN_LETTERS = {"C", "D", "H", "K", "N", "O", "R", "S", "V", "Z"} ;
@@ -29,12 +29,12 @@ public class EyeChart {
      * Constructor for the eye chart. Will consist of multiple rows of ChartRow objects
      * @param distanceMeters - chart distance
      * @param chartType - chart type
-     * @param outputScaleX - scale factor for the screen
+     * @param screenPPI - pixel density for the screen
      */
-    public EyeChart(double distanceMeters, String chartType, double outputScaleX) {
+    public EyeChart(double distanceMeters, String chartType, double screenPPI) {
         this.distanceMeters = distanceMeters ;
         this.chartType = chartType ;
-        this.outputScaleX = outputScaleX ;
+        this.screenPPI = screenPPI ;
         this.chartRows = buildChart() ; //method to build the List of ChartRow objects
     }
 
@@ -110,7 +110,7 @@ public class EyeChart {
         List<ChartRow> chart = new ArrayList<>() ;  //initialize the List of ChartRow objects for the chart
         for (int denominator : DENOMINATORS) {
             List<String> rowOfLetters = randomizeSloanLine() ;
-            chart.add(new ChartRow(rowOfLetters, denominator, distanceMeters, outputScaleX)) ;
+            chart.add(new ChartRow(rowOfLetters, denominator, distanceMeters, screenPPI)) ;
         }
         return chart ;
     }
@@ -134,7 +134,7 @@ public class EyeChart {
         List<ChartRow> chart = new ArrayList<>() ; //initialize the list of chartRow objects for this chart
         for (int denominator : DENOMINATORS) {
             List<String> rowOfDegrees = randomizeTumblingLine() ;
-            chart.add(new ChartRow(rowOfDegrees, denominator, distanceMeters, outputScaleX)) ;
+            chart.add(new ChartRow(rowOfDegrees, denominator, distanceMeters, screenPPI)) ;
         }
         return chart ;
     }

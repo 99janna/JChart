@@ -25,15 +25,15 @@ public class ChartRow {
      * @param letters - the list of letters to be used on the chart line
      * @param denominator - will change throughout the testing process
      * @param distanceMeters - passed into the constructor, likely constant
-     * @param outputScaleX - the screen scale factor obtained from the screen used for the chart
+     * @param screenPPI - the screen's pixel density
      */
     public ChartRow(List<String> letters,
                     double denominator,
                     double distanceMeters,
-                    double outputScaleX) {
+                    double screenPPI) {
         this.letters = letters ;
         this.arcMinutes = new ArcMinutes(denominator, distanceMeters) ;
-        this.letterRenderer = new LetterRenderer(arcMinutes, outputScaleX) ;
+        this.letterRenderer = new LetterRenderer(arcMinutes, screenPPI) ;
         this.letterSpacing =  letterRenderer.letterSpacing() ;
         this.rowSpacing = letterRenderer.rowSpacing() ;
     }

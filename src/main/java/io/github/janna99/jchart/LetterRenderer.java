@@ -19,16 +19,16 @@ public class LetterRenderer {
     private static final String SLOAN_FONT_PATH = "/fonts/Sloan.otf" ;
     public static final Font sloanFont = loadSloanFont();
 
-    private double outputScaleX ; //variable that determines the scale
+    private double screenPPI ; //screen's pixel density
 
     /**
      * Constructor for the letter renderer
      * @param arcMinutes
-     * @param outputScaleX
+     * @param screenPPI
      */
-    public LetterRenderer(ArcMinutes arcMinutes, double outputScaleX) {
+    public LetterRenderer(ArcMinutes arcMinutes, double screenPPI) {
         this.arcMinutes = arcMinutes ;
-        this.outputScaleX = outputScaleX ;
+        this.screenPPI = screenPPI ;
     }
 
     /**
@@ -51,9 +51,9 @@ public class LetterRenderer {
      * @param letter: Character to display
      */
     public Text renderLetter(String letter, int contrastPercent) {
-        double heightPoints = pointHeightAfterCalibration(arcMinutes) ; //size of the object in points
+        double heightPixels = pixelHeightAfterCalibration(arcMinutes) ; //size of the object in points
         Text text = new Text(letter); // Create JavaFX Text node
-        text.setFont(Font.font(sloanFont.getFamily(), heightPoints)); // Set font size to match pixel height
+        text.setFont(Font.font(sloanFont.getFamily(), heightPixels)); // Set font size to match pixel height
         double brightness = 1.0 - (contrastPercent / 100.0) ;  //to calculate the brightness based on contrast given
         text.setFill(Color.gray(brightness)); // set the font's color, with contrast sensitivity in mind
 
@@ -61,14 +61,15 @@ public class LetterRenderer {
     }
 
     /**
-     * This method calculates the height in points of the letter we need to display
-     * @return letter height in points
+     * This method calculates the height in pixels of the letter we need to display
+     * @return letter height in pixels
      */
-    private double pointHeightAfterCalibration(ArcMinutes arcMinutes) {
+    private double pixelHeightAfterCalibration(ArcMinutes arcMinutes) {
         double heightMM = arcMinutes.calculateHeightMeters() * 1000 ; //multiplier to convert from meters to mm
-        double heightPoints = heightMM * 72.0 / 25.4 ;
+        double heightInches = heightMM / 25.4 ;  //convert from mm to inches because the pixel density is in inches
+        double heightPixels = heightInches * screenPPI ; //scale for actual screen scale
 
-        return heightPoints / outputScaleX ; //the rendering height for java fonts divided by the screen's scale factor
+        return heightPixels; //the rendering height for java fonts in logical pixels
     }
 
     /**
@@ -79,7 +80,7 @@ public class LetterRenderer {
         Text sample = new Text("H") ;
         sample.setFont(Font.font(
                 sloanFont.getFamily(),
-                pointHeightAfterCalibration(arcMinutes))) ;
+                pixelHeightAfterCalibration(arcMinutes))) ;
         return sample.getBoundsInLocal().getWidth() ;
     }
 
@@ -91,7 +92,7 @@ public class LetterRenderer {
         Text sample = new Text("H") ;
         sample.setFont(Font.font(
                 sloanFont.getFamily(),
-                pointHeightAfterCalibration(arcMinutes))) ;
+                pixelHeightAfterCalibration(arcMinutes))) ;
         return sample.getBoundsInLocal().getHeight() ;
     }
 }

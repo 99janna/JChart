@@ -29,7 +29,7 @@ public class MainWindow implements ChartStateListener{
     //parameters
     private String chartType ;  //the type of chart we are using
     private double distanceMeters ;
-    private double outputScaleX ; //the scale factor obtained from the screen itself
+    private double screenPPI ; //the screen pixel density
 
     //text and choice boxes
     private ChoiceBox<String> chartSelector ;
@@ -73,26 +73,29 @@ public class MainWindow implements ChartStateListener{
      */
     public void launchChart() {
         if (chartStage != null) {
-            chartStage.close() ;  //close the existing chartstage if there is already one
+            chartStage.close() ;  //close the existing chartStage if there is already one
         }
         this.chartStage = new Stage() ; //creates a new stage for the chart itself
 
-        if (Screen.getScreens().size() > 1) {
-            Screen second = Screen.getScreens().get(1);
-            Rectangle2D bounds = second.getVisualBounds() ;
-            chartStage.setX(bounds.getMinX()) ;
-            chartStage.setY(bounds.getMinY()) ;
-            chartStage.setWidth(bounds.getWidth()) ;
-            chartStage.setHeight(bounds.getHeight()) ;
+        Screen screen ; //declare the screen variable
+        if (Screen.getScreens().size() > 1) {  //sets the chart to the secondary screen if it's available
+            screen = Screen.getScreens().get(1);
+        } else {
+            screen = Screen.getPrimary() ;  //will default to the main screen
         }
+        Rectangle2D bounds = screen.getVisualBounds();
+        chartStage.setX(bounds.getMinX());
+        chartStage.setY(bounds.getMinY());
+        chartStage.setWidth(bounds.getWidth());
+        chartStage.setHeight(bounds.getHeight());
 
         chartStage.setScene(new Scene(new StackPane(), 800, 600)) ;
         chartStage.setFullScreen(true); //TODO this should be active for windows computers only, deactivate on macs
 
         chartStage.show() ;
 
-        this.outputScaleX = chartStage.getOutputScaleX() ; //to obtain the screen's scale factor
-        this.chart = new EyeChart(distanceMeters, chartType, outputScaleX) ;  //build out version 1 of the eye chart
+        this.screenPPI = screen.getDpi();  //to obtain the screen's pixel density
+        this.chart = new EyeChart(distanceMeters, chartType, screenPPI) ;  //build out version 1 of the eye chart
 
         JChartController controller = new JChartController(chart, chartStage, stage) ;
         controller.setChartStateListener(this); //assign the chart state listener to this instance of MainWindow
